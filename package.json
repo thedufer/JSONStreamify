@@ -4,7 +4,8 @@
   "description": "recursive streaming JSON.stringify",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "compile": "coffee -c -o js/ -c src/"
   },
   "repository": {
     "type": "git",
@@ -23,9 +24,9 @@
   },
   "homepage": "https://github.com/thedufer/JSONStreamify",
   "devDependencies": {
-    "mocha": "~2.1.0"
-  },
-  "dependencies": {
+    "mocha": "~2.1.0",
+    "coffee-script": "~1.8.0",
+    "should": "~4.4.2",
     "underscore": "~1.7.0"
   }
 }

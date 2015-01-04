@@ -1,8 +1,5 @@
 { Readable } = require('stream')
-_ = require('underscore')
-
-escapeForJSON = (str) ->
-  JSON.stringify(str.toString()).slice(1, -1)
+util = require('./util')
 
 class JSONStream extends Readable
   constructor: ->
@@ -38,14 +35,20 @@ class JSONStream extends Readable
       @_reading = true
 
       stream = item.data
+      isJSON = stream instanceof JSONStream
 
-      stream.on 'data', (data) ->
-        if stream instanceof JSONStream
+      if !isJSON
+        @push('"')
+
+      stream.on 'data', (data) =>
+        if isJSON
           @push(data)
         else
-          @push(escapeForJSON(data))
+          @push(util.escapeForJSON(data))
 
-      stream.on 'end', ->
+      stream.on 'end', =>
+        if !isJSON
+          @push('"')
         @_reading = false
         @_attemptConsume()
     else
@@ -60,32 +63,4 @@ class JSONStream extends Readable
     @_queue.push(item)
     @_attemptConsume()
 
-class ObjectStream extends JSONStream
-  _startChar: "{"
-  _endChar: "}"
-  write: (key, data) ->
-    if @finished
-      throw new Error("Can't write to finished ObjectStream")
-    if typeof data == "undefined"
-      return
-    @enqueue({ key, data })
-  
-  startItem: (item) ->
-    @push("\"#{escapeForJSON(item.key)}\":")
-
-class ArrayStream extends JSONStream
-  _startChar: "["
-  _endChar: "]"
-  write: (data) ->
-    if @finished
-      throw new Error("Can't write to finished ArrayStream")
-    if typeof data == "undefined"
-      data = null
-    @enqueue({ data })
-
-  startItem: ->
-
-module.exports = {
-  ArrayStream
-  ObjectStream
-}
+module.exports = JSONStream
