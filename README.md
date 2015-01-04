@@ -17,6 +17,8 @@ Example:
     
     obj.pipe(process.stdout)
 
+    // outputs `{"nesting arrays in objects":[1,"strings",true,null]}`
+
 - `ObjectStream`
   - `write(key, value)`
   - `finish()`
@@ -69,12 +71,12 @@ Instances of ObjectStream and ArrayStream are an exception - they will not be
 
 `undefined` doesn't exist in JSON, so we handle it the same way as
 `JSON.stringify` - it will be changed to `null` if in an array, and the
-key/value pair will be dropped if it is the value in an array.
+key/value pair will be dropped if it is the value in an object.
 
 ###Everything Else
 
 All other values will be `JSON.stringify`'d.  That means that objects, strings,
-arrays, booleans, numbers, etc. will behave as expected.
+arrays, booleans, numbers, null, etc. will behave as expected.
 
 ##Buffering
 
