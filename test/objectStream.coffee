@@ -1,3 +1,4 @@
+expect = require('chai').expect
 util = require('./util')
 { ObjectStream } = require('../src/index')
 
@@ -108,3 +109,11 @@ describe 'chaining', ->
     o.finish()
 
     util.compareStreamObject(o, {a: 1, b: 2}, next)
+
+describe 'write', ->
+  it 'errors after finish', ->
+    a = new ObjectStream()
+    a.finish()
+    expect(->
+      a.write('a')
+    ).to.throw(Error)
