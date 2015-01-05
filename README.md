@@ -9,11 +9,11 @@ Example:
     arr.write('strings')
     arr.write(true)
     arr.write(undefined)
-    arr.finish()
+    arr.end()
 
     obj.write('nesting arrays in objects', arr)
 
-    obj.finish()
+    obj.end()
     
     obj.pipe(process.stdout)
 
@@ -21,10 +21,10 @@ Example:
 
 - `ObjectStream`
   - `write(key, value)`
-  - `finish()`
+  - `end()`
 - `ArrayStream`
   - `write(value)`
-  - `finish()`
+  - `end()`
 
 The constructors take no arguments.
 
@@ -37,10 +37,10 @@ are discussed below.
 
 Note: The stream will contain keys in the order they are written to the object.
 
-###ObjectStream::finish()
+###ObjectStream::end()
 
 Declares that no more will be written.  It is an error to call `write` after
-`finish`.  After finish is called and all of the values resolve, the stream
+`end`.  After end is called and all of the values resolve, the stream
 will end.
 
 ##ArrayStream
@@ -50,10 +50,10 @@ will end.
 Appends a value to the array.  Arrays can only be written to in order.  Value
 types are discussed below.
 
-###ArrayStream::finish()
+###ArrayStream::end()
 
 Declares that no more will be written.  It is an error to call `write` after
-`finish`.  After finish is called and all of the values resolve, the stream
+`end`.  After end is called and all of the values resolve, the stream
 will end.
 
 ##Values

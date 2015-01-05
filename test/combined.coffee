@@ -6,8 +6,8 @@ describe 'object top-level', ->
     o = new ObjectStream()
     a = new ArrayStream()
     o.write('a', a)
-    a.finish()
-    o.finish()
+    a.end()
+    o.end()
 
     util.compareStreamObject(o, {a: []}, next)
 
@@ -17,9 +17,9 @@ describe 'object top-level', ->
     o2 = new ObjectStream()
     o1.write('a', a)
     a.write(o2)
-    o2.finish()
-    a.finish()
-    o1.finish()
+    o2.end()
+    a.end()
+    o1.end()
 
     util.compareStreamObject(o1, {a: [{}]}, next)
 
@@ -29,9 +29,9 @@ describe 'object top-level', ->
     a2 = new ArrayStream()
     o1.write('a', a1)
     a1.write(a2)
-    a2.finish()
-    a1.finish()
-    o1.finish()
+    a2.end()
+    a1.end()
+    o1.end()
 
     util.compareStreamObject(o1, {a: [[]]}, next)
 
@@ -40,8 +40,8 @@ describe 'array top-level', ->
     a = new ArrayStream()
     o = new ObjectStream()
     a.write(o)
-    o.finish()
-    a.finish()
+    o.end()
+    a.end()
 
     util.compareStreamObject(a, [{}], next)
 
@@ -51,9 +51,9 @@ describe 'array top-level', ->
     a2 = new ArrayStream()
     a1.write(o)
     o.write('a', a2)
-    a2.finish()
-    o.finish()
-    a1.finish()
+    a2.end()
+    o.end()
+    a1.end()
 
     util.compareStreamObject(a1, [{a: []}], next)
 
@@ -63,8 +63,8 @@ describe 'array top-level', ->
     o2 = new ObjectStream()
     a.write(o1)
     o1.write('a', o2)
-    o2.finish()
-    o1.finish()
-    a.finish()
+    o2.end()
+    o1.end()
+    a.end()
 
     util.compareStreamObject(a, [{a: {}}], next)

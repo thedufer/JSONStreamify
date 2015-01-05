@@ -5,35 +5,35 @@ util = require('./util')
 describe 'simple objects', ->
   it 'empty', (next) ->
     o = new ObjectStream()
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {}, next)
 
   it 'number key', (next) ->
     o = new ObjectStream()
     o.write(1, '')
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {1: ''}, next)
 
   it 'number value', (next) ->
     o = new ObjectStream()
     o.write('a', 1234)
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {a: 1234}, next)
 
   it 'null value', (next) ->
     o = new ObjectStream()
     o.write('a', null)
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {a: null}, next)
 
   it 'undefined value', (next) ->
     o = new ObjectStream()
     o.write('a', undefined)
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {}, next)
 
@@ -41,14 +41,14 @@ describe 'simple objects', ->
     it 'true', (next) ->
       o = new ObjectStream()
       o.write('a', true)
-      o.finish()
+      o.end()
 
       util.compareStreamObject(o, {a: true}, next)
 
     it 'false', (next) ->
       o = new ObjectStream()
       o.write('a', false)
-      o.finish()
+      o.end()
 
       util.compareStreamObject(o, {a: false}, next)
 
@@ -56,7 +56,7 @@ describe 'simple objects', ->
     o = new ObjectStream()
     value = '\n\r\0\\"'
     o.write('a', value)
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {a: value}, next)
 
@@ -64,7 +64,7 @@ describe 'simple objects', ->
     o = new ObjectStream()
     value = 'this is a good length for a string'
     o.write('a', new util.StringStream(value))
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {a: value}, next)
 
@@ -73,8 +73,8 @@ describe 'nested objects', ->
     o1 = new ObjectStream()
     o2 = new ObjectStream()
     o1.write('a', o2)
-    o1.finish()
-    o2.finish()
+    o1.end()
+    o2.end()
 
     util.compareStreamObject(o1, {a: {}}, next)
 
@@ -84,9 +84,9 @@ describe 'nested objects', ->
     o3 = new ObjectStream()
     o1.write('a', o2)
     o1.write('b', o3)
-    o1.finish()
-    o3.finish()
-    o2.finish()
+    o1.end()
+    o3.end()
+    o2.end()
 
     util.compareStreamObject(o1, {a: {}, b: {}}, next)
 
@@ -96,9 +96,9 @@ describe 'nested objects', ->
     o3 = new ObjectStream()
     o1.write('a', o2)
     o2.write('a', o3)
-    o1.finish()
-    o3.finish()
-    o2.finish()
+    o1.end()
+    o3.end()
+    o2.end()
 
     util.compareStreamObject(o1, {a: {a: {}}}, next)
 
@@ -106,14 +106,14 @@ describe 'chaining', ->
   it 'works', (next) ->
     o = new ObjectStream()
     o.write('a', 1).write('b', 2)
-    o.finish()
+    o.end()
 
     util.compareStreamObject(o, {a: 1, b: 2}, next)
 
 describe 'write', ->
-  it 'errors after finish', ->
+  it 'errors after end', ->
     a = new ObjectStream()
-    a.finish()
+    a.end()
     expect(->
       a.write('a')
     ).to.throw(Error)

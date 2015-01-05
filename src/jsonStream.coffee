@@ -55,7 +55,7 @@ class JSONStream extends Readable
       @push(JSON.stringify(item.data))
       @_attemptConsume()
 
-  finish: ->
+  end: ->
     @finished = true
     @_attemptConsume()
 

@@ -5,28 +5,28 @@ util = require('./util')
 describe 'simple arrays', ->
   it 'empty', (next) ->
     a = new ArrayStream()
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [], next)
 
   it 'number', (next) ->
     a = new ArrayStream()
     a.write(1234)
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [1234], next)
 
   it 'null', (next) ->
     a = new ArrayStream()
     a.write(null)
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [null], next)
 
   it 'undefined', (next) ->
     a = new ArrayStream()
     a.write(undefined)
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [null], next)
 
@@ -34,14 +34,14 @@ describe 'simple arrays', ->
     it 'true', (next) ->
       a = new ArrayStream()
       a.write(true)
-      a.finish()
+      a.end()
 
       util.compareStreamObject(a, [true], next)
 
     it 'false', (next) ->
       a = new ArrayStream()
       a.write(false)
-      a.finish()
+      a.end()
 
       util.compareStreamObject(a, [false], next)
 
@@ -49,7 +49,7 @@ describe 'simple arrays', ->
     a = new ArrayStream()
     value = '\n\r\0\\"'
     a.write(value)
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [value], next)
 
@@ -57,7 +57,7 @@ describe 'simple arrays', ->
     a = new ArrayStream()
     value = 'this is a good length for a string'
     a.write(new util.StringStream(value))
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [value], next)
 
@@ -66,8 +66,8 @@ describe 'nested arrays', ->
     a1 = new ArrayStream()
     a2 = new ArrayStream()
     a1.write(a2)
-    a1.finish()
-    a2.finish()
+    a1.end()
+    a2.end()
 
     util.compareStreamObject(a1, [[]], next)
 
@@ -77,9 +77,9 @@ describe 'nested arrays', ->
     a3 = new ArrayStream()
     a1.write(a2)
     a1.write(a3)
-    a1.finish()
-    a3.finish()
-    a2.finish()
+    a1.end()
+    a3.end()
+    a2.end()
 
     util.compareStreamObject(a1, [[], []], next)
 
@@ -89,9 +89,9 @@ describe 'nested arrays', ->
     a3 = new ArrayStream()
     a1.write(a2)
     a2.write(a3)
-    a1.finish()
-    a3.finish()
-    a2.finish()
+    a1.end()
+    a3.end()
+    a2.end()
 
     util.compareStreamObject(a1, [[[]]], next)
 
@@ -99,14 +99,14 @@ describe 'chaining', ->
   it 'works', (next) ->
     a = new ArrayStream()
     a.write(1).write(2)
-    a.finish()
+    a.end()
 
     util.compareStreamObject(a, [1, 2], next)
 
 describe 'write', ->
-  it 'errors after finish', ->
+  it 'errors after end', ->
     a = new ArrayStream()
-    a.finish()
+    a.end()
     expect(->
       a.write('a')
     ).to.throw(Error)
