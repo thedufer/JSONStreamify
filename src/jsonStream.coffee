@@ -1,3 +1,4 @@
+Promise = require('bluebird')
 { Readable } = require('stream')
 util = require('./util')
 
@@ -6,24 +7,14 @@ class JSONStream extends Readable
     super
     @push(@_startChar)
     @_hasContents = false
-    @_queue = []
-    @_reading = false
-    @finished = false
+    @_promise = Promise.resolve()
+
+  isFinished: ->
+    return !@_promise?
 
   _read: ->
 
-  _attemptConsume: ->
-    if @_reading
-      return
-
-    if @_queue.length == 0
-      if @finished
-        @push(@_endChar)
-        @push(null)
-      return
-
-    item = @_queue.shift()
-
+  _consume: (item) ->
     if !@_hasContents
       @_hasContents = true
     else
@@ -32,35 +23,35 @@ class JSONStream extends Readable
     @startItem(item)
 
     if item.data instanceof Readable
-      @_reading = true
-
       stream = item.data
       isJSON = stream instanceof JSONStream
-
-      if !isJSON
-        @push('"')
-
-      stream.on 'data', (data) =>
-        if isJSON
-          @push(data)
-        else
-          @push(util.escapeForJSON(data))
-
-      stream.on 'end', =>
+      p = new Promise (resolve, reject) =>
         if !isJSON
           @push('"')
-        @_reading = false
-        @_attemptConsume()
+
+        stream.on 'data', (data) =>
+          if isJSON
+            @push(data)
+          else
+            @push(util.escapeForJSON(data))
+
+        stream.on 'end', =>
+          if !isJSON
+            @push('"')
+          resolve()
+      return p
     else
       @push(JSON.stringify(item.data))
-      @_attemptConsume()
+      return
+
+  _finish: ->
+    @push(@_endChar)
+    @push(null)
 
   end: ->
-    @finished = true
-    @_attemptConsume()
+    @_promise = @_promise.then(=> @_finish()).done()
 
   enqueue: (item) ->
-    @_queue.push(item)
-    @_attemptConsume()
+    @_promise = @_promise.then(=> @_consume(item))
 
 module.exports = JSONStream

@@ -4,7 +4,7 @@ class ArrayStream extends JSONStream
   _startChar: "["
   _endChar: "]"
   write: (data) ->
-    if @finished
+    if @isFinished()
       throw new Error("Can't write to finished ArrayStream")
     if typeof data == "undefined"
       data = null
