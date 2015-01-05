@@ -2,10 +2,11 @@
   "name": "jsonstreamify",
   "version": "0.0.1",
   "description": "recursive streaming JSON.stringify",
-  "main": "index.js",
+  "main": "js/index.js",
   "scripts": {
     "test": "mocha",
-    "compile": "coffee -c -o js/ -c src/"
+    "compile": "coffee -c -o js/ src/",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",

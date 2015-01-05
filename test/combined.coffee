@@ -1,6 +1,6 @@
 should = require('should')
 util = require('./util')
-{ ArrayStream, ObjectStream } = require('../index.js')
+{ ArrayStream, ObjectStream } = require('../js/index')
 
 describe 'object top-level', ->
   it 'nested array', (next) ->
@@ -35,7 +35,7 @@ describe 'object top-level', ->
     o1.finish()
 
     util.compareStreamObject(o1, {a: [[]]}, next)
-    
+
 describe 'array top-level', ->
   it 'nested object', (next) ->
     a = new ArrayStream()

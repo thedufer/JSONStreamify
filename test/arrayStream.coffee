@@ -1,6 +1,6 @@
 should = require('should')
 util = require('./util')
-{ ArrayStream } = require('../index.js')
+{ ArrayStream } = require('../js/index')
 
 describe 'simple arrays', ->
   it 'empty', (next) ->
@@ -49,7 +49,7 @@ describe 'simple arrays', ->
     a = new ArrayStream()
     value = '\n\r\0\\"'
     a.write(value)
-    a.finish() 
+    a.finish()
 
     util.compareStreamObject(a, [value], next)
 

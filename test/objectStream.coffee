@@ -1,6 +1,6 @@
 should = require('should')
 util = require('./util')
-{ ObjectStream } = require('../index.js')
+{ ObjectStream } = require('../js/index')
 
 describe 'simple objects', ->
   it 'empty', (next) ->
@@ -56,7 +56,7 @@ describe 'simple objects', ->
     o = new ObjectStream()
     value = '\n\r\0\\"'
     o.write('a', value)
-    o.finish() 
+    o.finish()
 
     util.compareStreamObject(o, {a: value}, next)
 

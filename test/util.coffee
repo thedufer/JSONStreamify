@@ -19,7 +19,7 @@ util.compareStreamObject = (stream, obj, next) ->
   util.consumeStream stream, (err, str) ->
     if err?
       throw err
-    util.deepCompare(obj, JSON.parse(str)).should.be.true;
+    util.deepCompare(obj, JSON.parse(str)).should.be.true
     next()
 
 class util.StringStream extends Readable
