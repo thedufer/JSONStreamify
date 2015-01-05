@@ -95,8 +95,8 @@ describe 'nested arrays', ->
 
     util.compareStreamObject(a1, [[[]]], next)
 
-describe 'chaining', ->
-  it 'works', (next) ->
+describe 'write', ->
+  it 'returns itself', (next) ->
     a = new ArrayStream()
     a.write(1).write(2)
     a.end()

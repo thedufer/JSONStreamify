@@ -102,8 +102,8 @@ describe 'nested objects', ->
 
     util.compareStreamObject(o1, {a: {a: {}}}, next)
 
-describe 'chaining', ->
-  it 'works', (next) ->
+describe 'write', ->
+  it 'returns itself', (next) ->
     o = new ObjectStream()
     o.write('a', 1).write('b', 2)
     o.end()
