@@ -1,6 +1,5 @@
-should = require('should')
 util = require('./util')
-{ ArrayStream } = require('../js/index')
+{ ArrayStream } = require('../src/index')
 
 describe 'simple arrays', ->
   it 'empty', (next) ->

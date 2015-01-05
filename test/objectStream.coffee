@@ -1,6 +1,5 @@
-should = require('should')
 util = require('./util')
-{ ObjectStream } = require('../js/index')
+{ ObjectStream } = require('../src/index')
 
 describe 'simple objects', ->
   it 'empty', (next) ->

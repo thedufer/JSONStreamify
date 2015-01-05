@@ -1,6 +1,5 @@
-should = require('should')
 util = require('./util')
-{ ArrayStream, ObjectStream } = require('../js/index')
+{ ArrayStream, ObjectStream } = require('../src/index')
 
 describe 'object top-level', ->
   it 'nested array', (next) ->

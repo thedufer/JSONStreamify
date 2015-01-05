@@ -1,4 +1,4 @@
-_ = require('underscore')
+expect = require('chai').expect
 util = exports
 { Readable } = require('stream')
 
@@ -13,13 +13,11 @@ util.consumeStream = (stream, next) ->
     next(null, str)
     next = ->
 
-util.deepCompare = _.isEqual
-
 util.compareStreamObject = (stream, obj, next) ->
   util.consumeStream stream, (err, str) ->
     if err?
       throw err
-    util.deepCompare(obj, JSON.parse(str)).should.be.true
+    expect(obj).to.eql(JSON.parse(str))
     next()
 
 class util.StringStream extends Readable
