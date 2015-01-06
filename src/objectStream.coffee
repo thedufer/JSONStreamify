@@ -6,7 +6,7 @@ class ObjectStream extends JSONStream
   _endChar: "}"
   write: (key, data) ->
     if @isFinished()
-      throw new Error("Can't write to finished ObjectStream")
+      throw new Error("Can't write to a finished ObjectStream")
     if typeof data == "undefined"
       return
     @enqueue({ key, data })

@@ -5,7 +5,7 @@ class ArrayStream extends JSONStream
   _endChar: "]"
   write: (data) ->
     if @isFinished()
-      throw new Error("Can't write to finished ArrayStream")
+      throw new Error("Can't write to a finished ArrayStream")
     if typeof data == "undefined"
       data = null
     @enqueue({ data })

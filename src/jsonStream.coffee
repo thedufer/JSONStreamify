@@ -3,7 +3,7 @@ Promise = require('bluebird')
 util = require('./util')
 
 class JSONStream extends Readable
-  constructor: ->
+  constructor: (obj) ->
     super
     @push(@_startChar)
     @_hasContents = false
@@ -24,34 +24,38 @@ class JSONStream extends Readable
 
     if item.data instanceof Readable
       stream = item.data
-      isJSON = stream instanceof JSONStream
-      p = new Promise (resolve, reject) =>
+    else
+      stream = makeJSONStream(item.data)
+
+    isJSON = stream instanceof JSONStream
+    p = new Promise (resolve, reject) =>
+      if !isJSON
+        @push('"')
+
+      stream.on 'data', (data) =>
+        if isJSON
+          @push(data)
+        else
+          @push(util.escapeForJSON(data))
+
+      stream.on 'end', =>
         if !isJSON
           @push('"')
-
-        stream.on 'data', (data) =>
-          if isJSON
-            @push(data)
-          else
-            @push(util.escapeForJSON(data))
-
-        stream.on 'end', =>
-          if !isJSON
-            @push('"')
-          resolve()
-      return p
-    else
-      @push(JSON.stringify(item.data))
-      return
+        resolve()
+    return p
 
   _finish: ->
     @push(@_endChar)
     @push(null)
 
   end: ->
+    if @isFinished()
+      throw new Error("Can't call end on a finished JSONStream")
     @_promise = @_promise.then(=> @_finish()).done()
 
   enqueue: (item) ->
     @_promise = @_promise.then(=> @_consume(item))
 
 module.exports = JSONStream
+
+makeJSONStream = require('./makeJsonStream')
