@@ -68,3 +68,20 @@ describe 'array top-level', ->
     a.end()
 
     util.compareStreamObject(a, [{a: {}}], next)
+
+describe 'bad streams', ->
+  it 'doesn\'t chop up UTF-8 char in half', (next) ->
+    b1 = Buffer([0x62, 0xe2])
+    b2 = Buffer([0x80, 0x93, 0x61, 0x72])
+    str = Buffer.concat([b1, b2]).toString()
+
+    f = new require('stream').PassThrough()
+    f.write(b1)
+    f.write(b2)
+    f.end()
+
+    o = new ObjectStream()
+    o.write("foo", f)
+    o.end()
+
+    util.compareStreamObject(o, foo: str, next)

@@ -1,6 +1,7 @@
 Promise = require('bluebird')
 { Readable } = require('stream')
 util = require('./util')
+stringifyBuffer = require('./stringifyBuffer')
 
 class JSONStream extends Readable
   constructor: (obj) ->
@@ -36,7 +37,10 @@ class JSONStream extends Readable
         if isJSON
           @push(data)
         else
-          @push(util.escapeForJSON(data))
+          if data instanceof Buffer
+            @push(stringifyBuffer(data))
+          else
+            @push(util.escapeForJSON(data))
 
       stream.on 'end', =>
         if !isJSON
